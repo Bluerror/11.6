@@ -146,6 +146,7 @@
     <ClCompile Include="exe3.cpp" />
     <ClCompile Include="exe4.cpp" />
     <ClCompile Include="exe5.cpp" />
+    <ClCompile Include="lexe5.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

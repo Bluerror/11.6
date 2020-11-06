@@ -4,26 +4,45 @@ using namespace cv;
 int main()
 {
 	cv::Mat desMat;
-	cv::Mat srcMat = cv::imread("C://Users//Lenovo//source//repos//11.6//1.jpg");
+	cv::Mat srcMat = cv::imread("C://Users//Lenovo//source//repos//11.6//1.jpg",0);
 	if (srcMat.empty())return -1;
 
-	const cv::Point2f src_pt[] = {
-		cv::Point2f(150,150),
-		cv::Point2f(150,300),
-		cv::Point2f(350, 300),
-		cv::Point2f(350,150)
-	};
-	const cv::Point2f des_pt[] = {
-		cv::Point2f(200,150),
-		cv::Point2f(200,300),
-		cv::Point2f(340, 270),
-		cv::Point2f(340,180)
-	};
+	int height = srcMat.rows;
+	int width = srcMat.cols;
 
-	const cv::Mat perspective_matrix= cv::getPerspectiveTransform(src_pt, des_pt);
-	cv::warpPerspective(srcMat, desMat, perspective_matrix, srcMat.size());
+	int a=0;
+	int b=0;
+	int c=0;
 
-	cv::imshow("scr", srcMat);
-	cv::imshow("des", desMat);
-	cv::waitKey(0);
+   for (int j = 0; j < height; j++)
+	{
+			if (srcMat.at<uchar>(j,0) < 230)  a = j;
+	}
+	for (int i = 0; i < width; i++)
+	{
+			if (srcMat.at<uchar>(0,i) < 230) b = i;
+	}
+	for (int i = 0; i < width; i++)
+		{
+			if (srcMat.at<uchar>(height, i) < 240)  c= i;
+		}
+	
+    
+
+const cv::Point2f src_pt[] = {
+							   cv::Point2f(a ,0),
+							   cv::Point2f(0,b),
+							   cv::Point2f(width - 1,c) };
+
+const cv::Point2f dst_pt[] = { cv::Point2f(0,srcMat.rows),
+							  cv::Point2f(0,0),
+							  cv::Point2f(srcMat.rows - 1,0) };
+
+const cv::Mat affine_matrix = cv::getAffineTransform(src_pt, dst_pt);
+
+cv::warpAffine(srcMat, desMat, affine_matrix, srcMat.size());
+
+    cv::imshow("scr", srcMat);
+    cv::imshow("des", desMat);
+   cv::waitKey(0);
 }
